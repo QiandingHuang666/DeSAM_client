@@ -5,8 +5,14 @@ build/
 dist/
 wheels/
 *.egg-info
+.coverage
+.pytest_cache/
 
 # Virtual environments
 .venv
-demo.py
+
+# IDE
 .vscode
+
+# Demo and examples (keep these in repo)
+demo.py
