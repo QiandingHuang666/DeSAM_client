@@ -1,20 +1,19 @@
 """DeSAM客户端主类"""
 
-import grpc
 from typing import Dict, List, Optional
 
-from .models import Job, Resource
-from .exceptions import (
-    DeSAMError,
-    AuthenticationError,
-    JobNotFoundError,
-    DeSAMConnectionError,
-    SubmitError,
-)
+import grpc
 
 # 导入生成的gRPC代码
-from ._grpc import client_pb2
-from ._grpc import client_pb2_grpc
+from ._grpc import client_pb2, client_pb2_grpc
+from .exceptions import (
+    AuthenticationError,
+    DeSAMConnectionError,
+    DeSAMError,
+    JobNotFoundError,
+    SubmitError,
+)
+from .models import Job, Resource
 
 
 class DeSAMClient:

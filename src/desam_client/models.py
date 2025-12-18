@@ -8,6 +8,7 @@ from typing import Dict, List, Optional
 @dataclass
 class Resource:
     """资源需求"""
+
     cpu: int = 1
     memory_mb: int = 1024
     gpu: int = 0
@@ -17,6 +18,7 @@ class Resource:
 @dataclass
 class Job:
     """作业信息"""
+
     job_id: str
     user_id: str
     name: str
@@ -60,9 +62,21 @@ class Job:
             labels=dict(proto_job.labels) if proto_job.labels else None,
             description=proto_job.description or None,
             metadata=dict(proto_job.metadata) if proto_job.metadata else None,
-            submit_time=datetime.fromtimestamp(proto_job.submit_time) if proto_job.submit_time else None,
-            start_time=datetime.fromtimestamp(proto_job.start_time) if proto_job.start_time else None,
-            finish_time=datetime.fromtimestamp(proto_job.finish_time) if proto_job.finish_time else None,
+            submit_time=(
+                datetime.fromtimestamp(proto_job.submit_time)
+                if proto_job.submit_time
+                else None
+            ),
+            start_time=(
+                datetime.fromtimestamp(proto_job.start_time)
+                if proto_job.start_time
+                else None
+            ),
+            finish_time=(
+                datetime.fromtimestamp(proto_job.finish_time)
+                if proto_job.finish_time
+                else None
+            ),
             error_message=proto_job.error_message or None,
             executor_id=proto_job.executor_id or None,
         )
