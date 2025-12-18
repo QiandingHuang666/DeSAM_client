@@ -45,11 +45,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/your-org/DeSAM"
-Documentation = "https://github.com/your-org/DeSAM/tree/main/DeSAM_client"
-Repository = "https://github.com/your-org/DeSAM.git"
-Issues = "https://github.com/your-org/DeSAM/issues"
-Changelog = "https://github.com/your-org/DeSAM/blob/main/DeSAM_client/CHANGELOG.md"
+Homepage = "https://github.com/QiandingHuang666/DeSAM_client"
+Documentation = "https://github.com/QiandingHuang666/DeSAM_client/tree/main/DeSAM_client"
+Repository = "https://github.com/QiandingHuang666/DeSAM_client.git"
+Issues = "https://github.com/QiandingHuang666/DeSAM_client/issues"
+
 
 [build-system]
 requires = ["hatchling"]
