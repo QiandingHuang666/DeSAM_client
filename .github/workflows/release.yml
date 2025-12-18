@@ -1,0 +1,99 @@
+name: Release to PyPI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9', '3.10', '3.11', '3.12']
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 安装 uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: 0.8.18
+    
+    - name: 设置 Python ${{ matrix.python-version }}
+      run: uv python install ${{ matrix.python-version }}
+    
+    - name: 安装依赖
+      run: uv sync --all-extras
+    
+    - name: 运行测试
+      run: uv run pytest
+    
+    - name: 运行类型检查
+      run: uv run mypy src/
+    
+    - name: 运行代码格式化检查
+      run: |
+        uv run black --check src/
+        uv run isort --check-only src/
+    
+    - name: 运行代码风格检查
+      run: uv run flake8 src/
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v4
+    
+    - name: 安装 uv
+      uses: astral-sh/setup-uv@v4
+      with:
+        version: 0.8.18
+    
+    - name: 设置 Python
+      run: uv python install 3.11
+    
+    - name: 安装构建依赖
+      run: uv add build twine
+    
+    - name: 构建包
+      run: uv run python -m build
+    
+    - name: 检查包
+      run: uv run twine check dist/*
+    
+    - name: 上传构建产物
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: dist/
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: 下载构建产物
+      uses: actions/download-artifact@v4
+      with:
+        name: dist
+        path: dist/
+    
+    - name: 发布到 PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        password: ${{ secrets.PYPI_API_TOKEN }}
+    
+    - name: 创建 GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/*
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
