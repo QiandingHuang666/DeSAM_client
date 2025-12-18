@@ -1,0 +1,23 @@
+[project]
+name = "desam-client"
+version = "0.1.0"
+description = "DeSAM调度器Python客户端库"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "grpcio>=1.60.0",
+    "grpcio-tools>=1.60.0",
+    "protobuf>=4.25.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/desam_client"]
