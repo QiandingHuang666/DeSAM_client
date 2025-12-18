@@ -26,7 +26,8 @@ jobs:
       run: uv sync --all-extras
     
     - name: 运行测试
-      run: uv run pytest
+      run: |
+        uv run pytest tests/ --tb=short
 
     # Skip type checking, formatting, and linting for initial release
     # - name: 运行类型检查

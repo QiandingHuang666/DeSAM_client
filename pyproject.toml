@@ -83,7 +83,8 @@ disable_error_code = ["attr-defined", "arg-type", "return-value", "no-any-return
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --cov=src/desam_client --cov-report=term-missing"
+python_files = ["test_*.py", "*_test.py"]
+addopts = "-v --cov=src/desam_client --cov-report=term-missing --tb=short"
 
 [dependency-groups]
 dev = [
