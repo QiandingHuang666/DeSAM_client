@@ -55,13 +55,13 @@ class Job:
                 disk_mb=proto_job.resources.disk_mb,
             ),
             working_dir=proto_job.working_dir or None,
-            env=dict(proto_job.env) if proto_job.env else None,
+            env=dict(proto_job.env) if hasattr(proto_job, 'env') else None,
             timeout=proto_job.timeout if proto_job.timeout > 0 else None,
             retries=proto_job.retries,
             artifacts=list(proto_job.artifacts) if proto_job.artifacts else None,
-            labels=dict(proto_job.labels) if proto_job.labels else None,
+            labels=dict(proto_job.labels) if hasattr(proto_job, 'labels') and proto_job.labels else None,
             description=proto_job.description or None,
-            metadata=dict(proto_job.metadata) if proto_job.metadata else None,
+            metadata=dict(proto_job.metadata) if hasattr(proto_job, 'metadata') and proto_job.metadata else None,
             submit_time=(
                 datetime.fromtimestamp(proto_job.submit_time)
                 if proto_job.submit_time

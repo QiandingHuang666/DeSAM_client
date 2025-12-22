@@ -14,6 +14,7 @@ from .exceptions import (
     SubmitError,
 )
 from .models import Job, Resource
+from .file_transfer import FileManager
 
 
 class DeSAMClient:
@@ -67,6 +68,9 @@ class DeSAMClient:
         self._channel = None
         self._stub = None
         self._connect()
+
+        # 初始化文件传输管理器
+        self.files = FileManager(self)
 
     def _connect(self):
         """建立gRPC连接"""

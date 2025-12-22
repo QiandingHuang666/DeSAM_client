@@ -16,3 +16,6 @@ wheels/
 
 # Demo and examples (keep these in repo)
 demo.py
+
+Docs
+.vscode
