@@ -1,6 +1,6 @@
 [project]
 name = "desam-client"
-version = "0.1.0"
+version = "0.1.1"
 description = "DeSAM调度器Python客户端库"
 readme = "README.md"
 requires-python = ">=3.8.1"
