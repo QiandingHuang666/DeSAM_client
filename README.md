@@ -47,13 +47,14 @@ uv sync
 ```python
 from desam_client import DeSAMClient
 
-# 连接调度器
+# 连接调度器（TLS证书是必需的）
 client = DeSAMClient(
     host="192.168.1.100",
     port=50051,
     api_key="sk-your-api-key",
-    cert_path="./server.crt"  # 生产环境建议使用TLS
+    cert_path="./server.crt"  # 必须提供TLS证书路径以确保安全连接
 )
+```
 
 try:
     # 提交作业

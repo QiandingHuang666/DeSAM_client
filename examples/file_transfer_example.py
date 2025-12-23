@@ -67,10 +67,12 @@ def main():
         print("""
 from desam_client import DeSAMClient
 
+# TLS证书是必需的
 client = DeSAMClient(
     host='localhost',
     port=50051,
-    api_key='your-api-key'
+    api_key='your-api-key',
+    cert_path='./server.crt'  # 必须提供TLS证书路径
 )
         """)
 
@@ -127,11 +129,12 @@ print(f"作业已提交: {job_id}")
         example_code = """
 from desam_client import DeSAMClient
 
-# 初始化客户端
+# 初始化客户端（TLS证书是必需的）
 client = DeSAMClient(
     host='101.201.28.217',
     port=50051,
-    api_key='sk-your-api-key'
+    api_key='sk-your-api-key',
+    cert_path='./server.crt'  # 必须提供TLS证书路径
 )
 
 try:

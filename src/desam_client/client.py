@@ -47,7 +47,7 @@ class DeSAMClient:
         host: str,
         port: int = 50051,
         api_key: str = "",
-        cert_path: Optional[str] = None,
+        cert_path: str = "",
         timeout: float = 30.0,
     ):
         """初始化DeSAM客户端
@@ -56,8 +56,11 @@ class DeSAMClient:
             host: 调度器地址
             port: 调度器端口（默认50051）
             api_key: API Key
-            cert_path: TLS证书路径（可选，生产环境建议使用）
+            cert_path: TLS证书路径（必需，必须提供证书文件路径以确保安全连接）
             timeout: 请求超时时间（秒，默认30）
+
+        Raises:
+            DeSAMConnectionError: 当未提供cert_path或连接失败时抛出
         """
         self.host = host
         self.port = port
@@ -77,17 +80,21 @@ class DeSAMClient:
         try:
             target = f"{self.host}:{self.port}"
 
-            if self.cert_path:
-                # TLS安全连接
-                with open(self.cert_path, "rb") as f:
-                    creds = grpc.ssl_channel_credentials(f.read())
-                self._channel = grpc.secure_channel(target, creds)
-            else:
-                # 非安全连接（仅开发环境）
-                self._channel = grpc.insecure_channel(target)
+            if not self.cert_path:
+                raise DeSAMConnectionError(
+                    "TLS证书路径是必需的。为了安全，必须使用安全连接。\n"
+                    "请通过 cert_path 参数提供证书文件路径。"
+                )
+
+            # TLS安全连接
+            with open(self.cert_path, "rb") as f:
+                creds = grpc.ssl_channel_credentials(f.read())
+            self._channel = grpc.secure_channel(target, creds)
 
             self._stub = client_pb2_grpc.ClientServiceStub(self._channel)
 
+        except FileNotFoundError:
+            raise DeSAMConnectionError(f"证书文件不存在: {self.cert_path}")
         except Exception as e:
             raise DeSAMConnectionError(f"连接调度器失败: {e}")
 
